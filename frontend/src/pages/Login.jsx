@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
     email: "",
@@ -23,11 +25,26 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = data;
     if (email && password) {
-      alert("successfull");
+      const fetchData = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const dataRes = await fetchData.json();
+      toast(dataRes.message);
+
+      if (dataRes.alert) {
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
     } else {
       alert("Password enter required fields");
     }

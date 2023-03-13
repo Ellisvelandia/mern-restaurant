@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { imageToBase64 } from "../utility/imageToBase64";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -34,13 +35,27 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  console.log("http://localhost:8080");
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { firstName, email, password, confirmPassword } = data;
     if (firstName && email && password && confirmPassword) {
       if (password === confirmPassword) {
-        alert("successfull");
-        navigate("/login");
+        const fetchData = await fetch("http://localhost:8080/signup", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const dataRes = await fetchData.json();
+        console.log(dataRes);
+
+        toast(dataRes.message);
+        if (dataRes.alert) {
+          navigate("/login");
+        }
       } else {
         alert("Password and confirm password not equal");
       }
