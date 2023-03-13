@@ -40,7 +40,7 @@ const Signup = () => {
     const { firstName, email, password, confirmPassword } = data;
     if (firstName && email && password && confirmPassword) {
       if (password === confirmPassword) {
-        const fetchData = await fetch("http://localhost:8080/signup", {
+        const fetchData = await fetch("https://auth-show.onrender.com/signup", {
           method: "POST",
           headers: {
             "content-type": "application/json",

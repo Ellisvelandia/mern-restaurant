@@ -2,14 +2,22 @@ import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux } from "../redux/useSlice";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  const userData = useSelector((state) => state);
+  console.log(userData);
+
+  const dispatch = useDispatch();
 
   const handleShowPassword = () => {
     setShowPassword((preve) => !preve);
@@ -29,7 +37,7 @@ const Login = () => {
     e.preventDefault();
     const { email, password } = data;
     if (email && password) {
-      const fetchData = await fetch("http://localhost:8080/login", {
+      const fetchData = await fetch("https://auth-show.onrender.com/login", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -41,10 +49,12 @@ const Login = () => {
       toast(dataRes.message);
 
       if (dataRes.alert) {
+        dispatch(loginRedux(dataRes));
         setTimeout(() => {
           navigate("/");
         }, 1000);
       }
+
     } else {
       alert("Password enter required fields");
     }
