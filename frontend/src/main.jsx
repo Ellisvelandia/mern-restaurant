@@ -6,11 +6,22 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { About, Contact, Home, Login, Menu, NewProduct, Signup } from "./pages";
 import App from "./App";
 import "./index.css";
 
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path="/" element={<App />}></Route>)
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route index element={<Home />} />
+      <Route path="/menu" element={<Menu />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/newproduct" element={<NewProduct />} />
+      <Route path="/signup" element={<Signup />} />
+    </Route>
+  )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
