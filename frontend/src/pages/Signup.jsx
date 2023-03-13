@@ -35,7 +35,6 @@ const Signup = () => {
     });
   };
 
-  console.log("http://localhost:8080");
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { firstName, email, password, confirmPassword } = data;
@@ -50,7 +49,6 @@ const Signup = () => {
         });
 
         const dataRes = await fetchData.json();
-        console.log(dataRes);
 
         toast(dataRes.message);
         if (dataRes.alert) {

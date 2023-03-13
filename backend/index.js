@@ -33,27 +33,27 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email } = req.body;
   const user = await userModel.findOne({ email });
 
   if (user) {
-    return res.status(400).json({ message: 'Email id is already registered', alert: false });
+    return res
+      .status(400)
+      .json({ message: "Email id is already registered", alert: false });
   }
 
   const data = new userModel(req.body);
   try {
     await data.save();
-    res.json({ message: 'Successfully signed up', alert: true });
+    res.json({ message: "Successfully signed up", alert: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error saving user data', alert: false });
+    res.status(500).json({ message: "Error saving user data", alert: false });
   }
 });
 
-
 app.post("/login", async (req, res) => {
-  console.log(req.body);
   const { email } = req.body;
   try {
     const result = await userModel.findOne({ email: email });
@@ -65,7 +65,6 @@ app.post("/login", async (req, res) => {
         email: result.email,
         image: result.image,
       };
-      console.log(dataToSend);
       res.send({ message: "Login successful", alert: true, data: dataToSend });
     } else {
       res.send({ message: "Email not found, please sign up", alert: false });
@@ -75,6 +74,5 @@ app.post("/login", async (req, res) => {
     res.status(500).send({ message: "Internal server error", alert: false });
   }
 });
-
 
 app.listen(PORT, () => console.log("server is running at port : " + PORT));
